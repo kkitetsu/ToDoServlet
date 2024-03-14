@@ -28,10 +28,10 @@ public class ModifyDao extends Dao {
 		return results;
 	}
 	
-	public int insert(String title, String content) throws Exception {
+	public int insert(String title, String content, String priority) throws Exception {
 		String sql = "INSERT INTO " + tableName + 
-				" (title, contents, createdAt) VALUES (\"" + 
-				   title + "\", \"" + content + "\", CURRENT_TIMESTAMP)";
+				" (title, contents, createdAt, priority) VALUES (\"" + 
+				   title + "\", \"" + content + "\", CURRENT_TIMESTAMP, \"" + priority + "\")";
 	    System.out.println(sql);
 		
 	    connect();

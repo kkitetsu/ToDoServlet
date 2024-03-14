@@ -11,12 +11,19 @@ public class ListDao extends Dao {
 		// Empty constructor
 	}
 	
-	public HashMap<Integer, ArrayList<String>> select(boolean isOrderTime) throws Exception {
+	public HashMap<Integer, ArrayList<String>> select(String order) throws Exception {
     	PreparedStatement statement = null;
     	ResultSet results = null;
     	String sql = "";
-    	if (isOrderTime) {
+    	if (order.equals("sortTime")) {
     		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 ORDER BY createdAt";
+    	} else if (order.equals("sortPri")){
+    		sql = "SELECT * FROM " + tableName  + " WHERE del_Flag=0 ORDER BY CASE priority\n"
+							    				+ " WHEN 'HIGH' THEN 1\n"
+							    				+ " WHEN 'MEDIUM' THEN 2\n"
+							    				+ " WHEN 'LOW' THEN 3\n"
+							    				+ " ELSE 4\n"
+							    				+ " END;";
     	} else {
     		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0";
     	}

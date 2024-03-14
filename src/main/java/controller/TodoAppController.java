@@ -3,8 +3,6 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,14 +31,16 @@ public class TodoAppController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		
+		request.setCharacterEncoding("utf-8"); 
 		ListDao dao = new ListDao();
 		
 		try {
-			HashMap<Integer, ArrayList<String>> selectedData = dao.select(false);
-			HashMap<Integer, ArrayList<String>> newData = new HashMap<Integer, ArrayList<String>>();
-			Iterator<Map.Entry<Integer, ArrayList<String>>> iterator = selectedData.entrySet().iterator();
-			if (request.getAttribute("sortTime") != null && (boolean)request.getAttribute("sortTime")) {
-				selectedData = dao.select(true);
+			HashMap<Integer, ArrayList<String>> selectedData = dao.select("");
+			if (request.getAttribute("sortTime") != null) {
+				selectedData = dao.select("sortTime");
+			} else if (request.getAttribute("sortPri") != null) {
+				selectedData = dao.select("sortPri");
 			}
 			request.setAttribute("rows", selectedData);
 		} catch (Exception e) {
@@ -58,6 +58,8 @@ public class TodoAppController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		request.setCharacterEncoding("utf-8"); 
+		
 		String action = request.getParameter("action");
 		
 		if (action.equals("Add Todo")) {
@@ -65,7 +67,10 @@ public class TodoAppController extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
 		} else if (action.equals("Sort Time")) {
-			request.setAttribute("sortTime", true);
+			request.setAttribute("sortTime", "sortTime");
+			doGet(request, response);
+		} else if (action.equals("Sort Priority")) {
+			request.setAttribute("sortPri", "sortPri");
 			doGet(request, response);
 		}
 		
@@ -88,9 +93,10 @@ public class TodoAppController extends HttpServlet {
 			}
 		} else if (action.equals("AddNew")) {
 			try {
-				String title   = request.getParameter("title");
-				String content = request.getParameter("content");
-				dao.insert(title, content);
+				String title    = request.getParameter("title");
+				String content  = request.getParameter("content");
+				String priority = request.getParameter("priority");
+				dao.insert(title, content, priority);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -38,6 +38,12 @@
 	        <input type="text" id="content" name="content" value="">
 	    </div>
 	    <div>
+	    	<label for="priority">Priority:</label>
+		    <select id="priority" name="priority">
+		        <option value="HIGH">HIGH</option>
+		        <option value="MEDIUM">MEDIUM</option>
+		        <option value="LOW">LOW</option>
+		    </select>
 	        <input type="submit" value="AddNew" name="action">
 	    </div>
 	</form>
