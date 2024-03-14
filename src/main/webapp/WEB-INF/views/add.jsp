@@ -11,7 +11,6 @@
 	.container {
 	    display: flex;
 	    justify-content: center; 
-	    height: 100vh;
 	    border: solid 1px yellow;
 	}
 	

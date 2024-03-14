@@ -4,17 +4,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ListDao extends Dao {
 	ListDao() {
 		// Empty constructor
 	}
 	
-	public HashMap<Integer, ArrayList<String>> select() throws Exception {
+	public HashMap<Integer, ArrayList<String>> select(boolean isOrderTime) throws Exception {
     	PreparedStatement statement = null;
     	ResultSet results = null;
-    	String sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0";
-    	HashMap<Integer, ArrayList<String>> l = new HashMap<Integer, ArrayList<String>>();
+    	String sql = "";
+    	if (isOrderTime) {
+    		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 ORDER BY createdAt";
+    	} else {
+    		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0";
+    	}
+    	
+    	LinkedHashMap<Integer, ArrayList<String>> l = new LinkedHashMap<Integer, ArrayList<String>>();
     
     	connect();
     	statement = connection.prepareStatement(sql);
@@ -44,4 +51,5 @@ public class ListDao extends Dao {
     	return l;
     
     }
+	
 }

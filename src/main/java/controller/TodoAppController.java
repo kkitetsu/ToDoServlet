@@ -36,38 +36,13 @@ public class TodoAppController extends HttpServlet {
 		ListDao dao = new ListDao();
 		
 		try {
-			HashMap<Integer, ArrayList<String>> selectedData = dao.select();
+			HashMap<Integer, ArrayList<String>> selectedData = dao.select(false);
 			HashMap<Integer, ArrayList<String>> newData = new HashMap<Integer, ArrayList<String>>();
 			Iterator<Map.Entry<Integer, ArrayList<String>>> iterator = selectedData.entrySet().iterator();
-			if (false) {
-				ArrayList<Integer> high   = new ArrayList<>();
-				ArrayList<Integer> medium = new ArrayList<>();
-				ArrayList<Integer> low    = new ArrayList<>();
-				while (iterator.hasNext()) {
-					Map.Entry<Integer, ArrayList<String>> entry = iterator.next();
-					ArrayList<String> tmp = entry.getValue();
-					if (tmp.get(5).equals("red")) {
-						high.add(entry.getKey());
-					} else if (tmp.get(5).equals("orange")) {
-						medium.add(entry.getKey());
-					} else {
-						low.add(entry.getKey());
-					}
-				}
-				for (int i = 0; i < high.size(); i++) {
-					int key = high.get(i);
-					newData.put(key, selectedData.get(key));
-				}
-				for (int i = 0; i < medium.size(); i++) {
-					int key = high.get(i);
-					newData.put(key, selectedData.get(key));
-				}
-				for (int i = 0; i < low.size(); i++) {
-					int key = high.get(i);
-					newData.put(key, selectedData.get(key));
-				}
+			if (request.getAttribute("sortTime") != null && (boolean)request.getAttribute("sortTime")) {
+				selectedData = dao.select(true);
 			}
-			request.setAttribute("rows", dao.select());
+			request.setAttribute("rows", selectedData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,10 +60,13 @@ public class TodoAppController extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		
-		if (action.equals("Add")) {
+		if (action.equals("Add Todo")) {
 			String url = "WEB-INF/views/add.jsp";
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
+		} else if (action.equals("Sort Time")) {
+			request.setAttribute("sortTime", true);
+			doGet(request, response);
 		}
 		
 		ModifyDao dao = new ModifyDao();

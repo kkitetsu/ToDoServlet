@@ -23,19 +23,24 @@
             border: 1px solid blue;
             border-radius: 5px;
             padding: 10px;
-            width: 300px; /* Adjust the width as needed */
+            width: 300px; 
+            height: 150px;
             box-sizing: border-box;
-            overflow: hidden; /* Prevent content from overflowing */
+            overflow: hidden; 
     }
     .todo-item h3, .todo-item p { margin: 0; }
-    a { text-align: center }
+    .add_btn { text-align: center; margin: 20px; }
 </style>
 </head>
 <body>
 	<h1>Todo List</h1>
-	<form action="todo" method="post">
-		<input type="submit" value="Add" name="action">
-	</form>
+	<div class="add_btn">
+		<form action="todo" method="post">
+			<input type="submit" value="Add Todo"      name="action">
+			<input type="submit" value="Sort Time"     name="action">
+			<input type="submit" value="Sort Priority" name="action">
+		</form>
+	</div>
     <div id="todo-list">
         <% HashMap<Integer, ArrayList<String>> map = (HashMap<Integer, ArrayList<String>>)request.getAttribute("rows"); %>
         <% for (Map.Entry<Integer, ArrayList<String>> entry : map.entrySet()) { %>
