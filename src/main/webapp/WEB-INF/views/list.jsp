@@ -13,32 +13,51 @@
             font-family: Arial, sans-serif;
             margin: 30px;
             padding: 0;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, ifr));
     }
     #todo-list {
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap to the next line */
-            gap: 10px; /* Add some space between items */
+            flex-wrap: wrap; 
+            gap: 15px; 
     }
     .todo-item {
             border: 1px solid blue;
             border-radius: 5px;
             padding: 10px;
             width: 300px; 
-            height: 150px;
+            height: 180px;
             box-sizing: border-box;
             overflow: hidden; 
     }
     .todo-item h3, .todo-item p { margin: 0; }
     .add_btn { text-align: center; margin: 20px; }
+    .addTodo_btn { margin: 10px; }
 </style>
 </head>
 <body>
 	<h1>Todo List</h1>
 	<div class="add_btn">
 		<form action="todo" method="post">
-			<input type="submit" value="Add Todo"      name="action">
-			<input type="submit" value="Sort Time"     name="action">
-			<input type="submit" value="Sort Priority" name="action">
+			<input type="submit" value="Add Todo" name="action" class="addTodo_btn">
+			<div>
+				<label for="Time Order">時間並び替え:</label>
+			    <select id="priority" name="action">
+			        <option value="AscendingTime">古い順</option>
+			        <option value="DescendingTime">新しい順</option>
+			    </select>
+			    <input type="submit" value="Sort Time" name="action">
+		    </div>
+		</form>
+		<form action="todo" method="post">
+			<div>
+				<label for="priority">優先度並び替え:</label>
+			    <select id="priority" name="action">
+			        <option value="AscendingPri">低い順</option>
+			        <option value="DescendingPri">高い順</option>
+			    </select>
+			    <input type="submit" value="Sort Priority" name="action">
+		    </div>
 		</form>
 	</div>
     <div id="todo-list">
@@ -57,6 +76,7 @@
 	    			<input type="hidden" value="<%=id %>" name="key">
 	    			<input type="submit" value="Delete"   name="action">
    			    </form>
+   			    <h6>Created Time: <%=value.get(2) %></h6> 
             </div>
         <% } %>
     </div>

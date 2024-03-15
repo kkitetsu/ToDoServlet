@@ -38,9 +38,9 @@ public class TodoAppController extends HttpServlet {
 		try {
 			HashMap<Integer, ArrayList<String>> selectedData = dao.select("");
 			if (request.getAttribute("sortTime") != null) {
-				selectedData = dao.select("sortTime");
+				selectedData = dao.select((String) request.getAttribute("sortTime"));
 			} else if (request.getAttribute("sortPri") != null) {
-				selectedData = dao.select("sortPri");
+				selectedData = dao.select((String) request.getAttribute("sortPri"));
 			}
 			request.setAttribute("rows", selectedData);
 		} catch (Exception e) {
@@ -62,47 +62,60 @@ public class TodoAppController extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		
-		if (action.equals("Add Todo")) {
-			String url = "WEB-INF/views/add.jsp";
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-			dispatcher.forward(request, response);
-		} else if (action.equals("Sort Time")) {
-			request.setAttribute("sortTime", "sortTime");
-			doGet(request, response);
-		} else if (action.equals("Sort Priority")) {
-			request.setAttribute("sortPri", "sortPri");
-			doGet(request, response);
-		}
+		// Todo 追加, 時間ソート, もしくは優先度ソート
+		clickedNonSQL(action, request, response);
 		
 		ModifyDao dao = new ModifyDao();
 		
 		if (action.equals("Delete")) {
 			try {
-				String id = request.getParameter("key");
-				dao.delete(id);
+				dao.delete(request.getParameter("key"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else if (action.equals("Update")) {
 			try {
-				String id = request.getParameter("key");
-				String newComment = request.getParameter("comment");
-				dao.update(id, newComment);
+				dao.update(request.getParameter("key"), 
+						   request.getParameter("comment"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else if (action.equals("AddNew")) {
 			try {
-				String title    = request.getParameter("title");
-				String content  = request.getParameter("content");
-				String priority = request.getParameter("priority");
-				dao.insert(title, content, priority);
+				dao.insert(request.getParameter("title"), 
+						   request.getParameter("content"), 
+						   request.getParameter("priority"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
 		doGet(request, response);
+	}
+	
+	protected void clickedNonSQL(String action, 
+			HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println(action);
+		
+		if (action.equals("Add Todo")) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/add.jsp");
+			dispatcher.forward(request, response);
+		} else if (action.equals("AscendingTime")) {
+			request.setAttribute("sortTime", action);
+			doGet(request, response);
+		} else if (action.equals("DescendingTime")) {
+			request.setAttribute("sortTime", action);
+			doGet(request, response);
+		} else if (action.equals("AscendingPri")) {
+			request.setAttribute("sortPri", action);
+			doGet(request, response);
+		} else if (action.equals("DescendingPri")) {
+			request.setAttribute("sortPri", action);
+			doGet(request, response);
+		} else {
+			return;
+		}
 	}
 
 }

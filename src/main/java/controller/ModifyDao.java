@@ -14,8 +14,7 @@ public class ModifyDao extends Dao {
 	    	
 		connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
-		int results = statement.executeUpdate();
-		return results;
+		return statement.executeUpdate();
 	}
 	
 	public int delete(String id) throws Exception {
@@ -24,8 +23,7 @@ public class ModifyDao extends Dao {
 		
 		connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
-		int results = statement.executeUpdate();
-		return results;
+		return statement.executeUpdate();
 	}
 	
 	public int insert(String title, String content, String priority) throws Exception {
@@ -36,8 +34,7 @@ public class ModifyDao extends Dao {
 		
 	    connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
-		int results = statement.executeUpdate();
-		return results;
+		return statement.executeUpdate();
 	}
 	    
 }
