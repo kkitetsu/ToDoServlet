@@ -12,6 +12,13 @@ public class ListDao extends Dao {
 		// Empty constructor
 	}
 	
+	/**
+	 * Select the data from table.
+	 * 
+	 * @param order AscendingTime, DescendingTime, AscendingPri, DescendingPri, or nothing (default)
+	 * @return HashMap consists of each data, in int id and string list data value
+	 * @throws Exception
+	 */
 	public HashMap<Integer, ArrayList<String>> select(String order) throws Exception {
 		
     	PreparedStatement statement = null;
@@ -29,7 +36,7 @@ public class ListDao extends Dao {
 							    				+ " WHEN 'LOW' THEN 3\n"
 							    				+ " ELSE 4\n"
 							    				+ " END;";
-    	} else if (order.equals(ASCTIME)) {
+    	} else if (order.equals(ASCPRI)) {
     		sql = "SELECT * FROM " + tableName  + " WHERE del_Flag=0 ORDER BY CASE priority\n"
 							    				+ " WHEN 'LOW' THEN 1\n"
 							    				+ " WHEN 'MEDIUM' THEN 2\n"

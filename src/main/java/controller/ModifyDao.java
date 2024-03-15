@@ -8,8 +8,8 @@ public class ModifyDao extends Dao {
 		// Empty constructor
 	}
 	
-	public int update(String id, String comment) throws Exception {
-	    String sql = "UPDATE " + tableName + " SET contents=\"" + comment + "\"" + " WHERE id=" + id;
+	public int update(String id, String comment, String priority) throws Exception {
+	    String sql = "UPDATE " + tableName + " SET contents=\"" + comment + "\"" + ", priority=\"" + priority + "\" WHERE id=" + id;
 	    System.out.println(sql);
 	    	
 		connect();

@@ -23,7 +23,6 @@ public class TodoAppController extends HttpServlet {
      */
     public TodoAppController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -63,54 +62,39 @@ public class TodoAppController extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		// Todo 追加, 時間ソート, もしくは優先度ソート
-		clickedNonSQL(action, request, response);
+		clickedAddOrSort(action, request, response);
 		
 		ModifyDao dao = new ModifyDao();
 		
-		if (action.equals("Delete")) {
-			try {
+		try {
+			if (action.equals("Delete")) {
 				dao.delete(request.getParameter("key"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (action.equals("Update")) {
-			try {
+			} else if (action.equals("Update")) {
 				dao.update(request.getParameter("key"), 
-						   request.getParameter("comment"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (action.equals("AddNew")) {
-			try {
+						   request.getParameter("comment"), 
+						   request.getParameter("priority"));
+			} else if (action.equals("AddNew")) {
 				dao.insert(request.getParameter("title"), 
 						   request.getParameter("content"), 
 						   request.getParameter("priority"));
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		doGet(request, response);
 	}
 	
-	protected void clickedNonSQL(String action, 
+	protected void clickedAddOrSort(String action, 
 			HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println(action);
 		
 		if (action.equals("Add Todo")) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/add.jsp");
 			dispatcher.forward(request, response);
-		} else if (action.equals("AscendingTime")) {
+		} else if (action.equals("AscendingTime") || action.equals("DescendingTime")) {
 			request.setAttribute("sortTime", action);
 			doGet(request, response);
-		} else if (action.equals("DescendingTime")) {
-			request.setAttribute("sortTime", action);
-			doGet(request, response);
-		} else if (action.equals("AscendingPri")) {
-			request.setAttribute("sortPri", action);
-			doGet(request, response);
-		} else if (action.equals("DescendingPri")) {
+		} else if (action.equals("AscendingPri") || action.equals("DescendingPri")) {
 			request.setAttribute("sortPri", action);
 			doGet(request, response);
 		} else {

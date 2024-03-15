@@ -19,6 +19,7 @@
     #todo-list {
             display: flex;
             flex-wrap: wrap; 
+            justify-content: center;
             gap: 15px; 
     }
     .todo-item {
@@ -33,6 +34,35 @@
     .todo-item h3, .todo-item p { margin: 0; }
     .add_btn { text-align: center; margin: 20px; }
     .addTodo_btn { margin: 10px; }
+    
+    /* Code provided by ChatGPT BELOW CSS */
+	.front, .back {
+	  backface-visibility: hidden;
+	  transition: transform 0.5s;
+	}
+	
+	.front {
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.back {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  transform: rotateY(180deg);
+	}
+	
+	.todo-item.flipped .front {
+	  transform: rotateY(180deg);
+	}
+	
+	.todo-item.flipped .back {
+	  transform: rotateY(0deg);
+	}
+    
 </style>
 </head>
 <body>
@@ -61,24 +91,49 @@
 		</form>
 	</div>
     <div id="todo-list">
+    	<% // ----------------------------------------------------------------- %>
         <% HashMap<Integer, ArrayList<String>> map = (HashMap<Integer, ArrayList<String>>)request.getAttribute("rows"); %>
         <% for (Map.Entry<Integer, ArrayList<String>> entry : map.entrySet()) { %>
         
         	<% ArrayList<String> value = entry.getValue(); %>
         	<% String color = value.get(5); %>
 	        <% Integer id = entry.getKey(); %>
-        	<div class="todo-item" style="border: 6px solid <%=color %>;">
-                <h3>Title: <%=value.get(0) %></h3>
-                <p>Content: <%=value.get(1) %></p> 
-                <form action="todo" method="post">
-	    			<input type="text"   value=""         name="comment">
-	    			<input type="submit" value="Update"   name="action">
-	    			<input type="hidden" value="<%=id %>" name="key">
-	    			<input type="submit" value="Delete"   name="action">
-   			    </form>
-   			    <h6>Created Time: <%=value.get(2) %></h6> 
+        	<div class="todo-item" style="border: 6px solid <%=color %>; " onclick="toggleCard(this)">
+        		<div class="front">
+	                <h3>Title: <%=value.get(0) %></h3>
+	                <p>Content: <%=value.get(1) %></p> 
+	                <h6>Created Time: <%=value.get(2) %></h6> 
+                </div>
+                <div class="back">
+	                <form action="todo" method="post">
+	                	<label for="priority">Priority:</label>
+					    <select id="priority" name="priority">
+					        <option value="HIGH">HIGH</option>
+					        <option value="MEDIUM">MEDIUM</option>
+					        <option value="LOW">LOW</option>
+					    </select>
+		    			<input type="text"   value=""         name="comment" style="border: 1px solid white; ">
+		    			<input type="submit" value="Update"   name="action">
+		    			<input type="hidden" value="<%=id %>" name="key">
+		    			<input type="submit" value="Delete"   name="action">
+	   			    </form>
+   			    </div>
             </div>
         <% } %>
+        <% // ----------------------------------------------------------------- %>
     </div>
+    <script>
+    	/** Code provided by ChatGPT */
+	    function toggleCard(card) {
+    	  card.classList.toggle('flipped');
+    	}
+    	
+	 	// Prevent card flip when interacting with input field
+	    document.querySelectorAll('.todo-item input').forEach(function(input) {
+	      input.addEventListener('click', function(event) {
+	        event.stopPropagation();
+	      });
+	    });
+    </script>
 </body>
 </html>
