@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.servlet.http.HttpSession;
+
 public class ListDao extends Dao {
 	
 	ListDao() {
@@ -19,11 +21,14 @@ public class ListDao extends Dao {
 	 * @return HashMap consists of each data, in int id and string list data value
 	 * @throws Exception
 	 */
-	public HashMap<Integer, ArrayList<String>> select(String order) throws Exception {
+	public HashMap<Integer, ArrayList<String>> select(String order, HttpSession session) throws Exception {
 		
     	PreparedStatement statement = null;
     	ResultSet results = null;
-    	String sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 " + order;
+    	String sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 AND user_id=" + 
+    													session.getAttribute("id") + " " + order;
+    	
+    	System.out.println(sql);
     	
     	LinkedHashMap<Integer, ArrayList<String>> l = new LinkedHashMap<Integer, ArrayList<String>>();
     

@@ -24,10 +24,11 @@ public class ModifyDao extends Dao {
 		return statement.executeUpdate();
 	}
 	
-	public int insert(String title, String content, String priority) throws Exception {
+	public int insert(String title, String content, String priority, String userId) throws Exception {
 		String sql = "INSERT INTO " + tableName + 
-				" (title, contents, createdAt, priority) VALUES (\"" + 
-				   title + "\", \"" + content + "\", CURRENT_TIMESTAMP, " + priority + ")";
+				" (title, contents, user_id, createdAt, priority) VALUES (\"" + 
+				   title + "\", \"" + content + "\", " + userId + ", CURRENT_TIMESTAMP, " + priority + ")";
+		System.out.println(sql);
 		
 	    connect();
 		PreparedStatement statement = connection.prepareStatement(sql);

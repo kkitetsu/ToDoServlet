@@ -43,6 +43,8 @@ public class LoginController extends HttpServlet {
             String hashedPassword = HashGenerator.generateHash(password);
             String sql = "SELECT * FROM userInfoTable WHERE user_id=? AND password=?";
             
+            System.out.println(hashedPassword);
+            
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, username);
                 stmt.setString(2, hashedPassword);

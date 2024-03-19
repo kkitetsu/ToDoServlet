@@ -58,7 +58,7 @@ public class TodoAppController extends HttpServlet {
 		}
 		
 		try {
-			HashMap<Integer, ArrayList<String>> selectedData = dao.select(input);
+			HashMap<Integer, ArrayList<String>> selectedData = dao.select(input, session);
 			request.setAttribute("rows", selectedData);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +101,8 @@ public class TodoAppController extends HttpServlet {
 			} else if (action.equals("AddNew")) {
 				dao.insert(request.getParameter("title"), 
 						   request.getParameter("content"), 
-						   request.getParameter("priority"));
+						   request.getParameter("priority"),
+						   session.getAttribute("id").toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
