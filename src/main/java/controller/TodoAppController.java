@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class TodoAppController
@@ -31,8 +32,17 @@ public class TodoAppController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("id") == null) {
+			response.sendRedirect("login");
+			return;
+		}
+		
 		request.setCharacterEncoding("utf-8"); 
 		ListDao dao = new ListDao();
+		
+		System.out.println(request.getParameter("action"));
 		
 		try {
 			HashMap<Integer, ArrayList<String>> selectedData = dao.select("");
@@ -56,6 +66,13 @@ public class TodoAppController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("id") == null) {
+			response.sendRedirect("login");
+			return;
+		}
 		
 		request.setCharacterEncoding("utf-8"); 
 		

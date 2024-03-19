@@ -122,6 +122,9 @@
         <% } %>
         <% // ----------------------------------------------------------------- %>
     </div>
+    <form method="POST" action="logout">
+      <input type="submit" value="Logout">
+    </form>
     <script>
     	/** Code provided by ChatGPT */
 	    function toggleCard(card) {
