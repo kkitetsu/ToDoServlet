@@ -23,29 +23,7 @@ public class ListDao extends Dao {
 		
     	PreparedStatement statement = null;
     	ResultSet results = null;
-    	String sql = "";
-    	
-    	if (order.equals(ASCTIME)) {
-    		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 ORDER BY createdAt";
-    	} else if (order.equals(DECTIME)) {
-    		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 ORDER BY createdAt DESC";
-    	} else if (order.equals(DECPRI)){
-    		sql = "SELECT * FROM " + tableName  + " WHERE del_Flag=0 ORDER BY CASE priority\n"
-							    				+ " WHEN 'HIGH' THEN 1\n"
-							    				+ " WHEN 'MEDIUM' THEN 2\n"
-							    				+ " WHEN 'LOW' THEN 3\n"
-							    				+ " ELSE 4\n"
-							    				+ " END;";
-    	} else if (order.equals(ASCPRI)) {
-    		sql = "SELECT * FROM " + tableName  + " WHERE del_Flag=0 ORDER BY CASE priority\n"
-							    				+ " WHEN 'LOW' THEN 1\n"
-							    				+ " WHEN 'MEDIUM' THEN 2\n"
-							    				+ " WHEN 'HIGH' THEN 3\n"
-							    				+ " ELSE 4\n"
-							    				+ " END;";
-    	} else {
-    		sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0";
-    	}
+    	String sql = "SELECT * FROM " + tableName + " WHERE del_Flag=0 " + order;
     	
     	LinkedHashMap<Integer, ArrayList<String>> l = new LinkedHashMap<Integer, ArrayList<String>>();
     
@@ -61,10 +39,10 @@ public class ListDao extends Dao {
 			row.add(results.getString("updatedAt"));
 			row.add(results.getString("del_Flag"));
 			
-			String priority = results.getString("priority");
-			if (priority.equals("LOW")) {
+			int priority = results.getInt("priority");
+			if (priority == 1) {
 				row.add("green");
-			} else if (priority.equals("MEDIUM")) {
+			} else if (priority == 2) {
 				row.add("orange");
 			} else {
 				row.add("red");

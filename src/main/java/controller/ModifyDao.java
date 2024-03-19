@@ -9,8 +9,7 @@ public class ModifyDao extends Dao {
 	}
 	
 	public int update(String id, String comment, String priority) throws Exception {
-	    String sql = "UPDATE " + tableName + " SET contents=\"" + comment + "\"" + ", priority=\"" + priority + "\" WHERE id=" + id;
-	    System.out.println(sql);
+	    String sql = "UPDATE " + tableName + " SET contents=\"" + comment + "\"" + ", priority=" + priority + " WHERE id=" + id;
 	    	
 		connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -19,7 +18,6 @@ public class ModifyDao extends Dao {
 	
 	public int delete(String id) throws Exception {
 		String sql = "UPDATE " + tableName + " SET updatedAt=CURRENT_TIMESTAMP, del_Flag=1 WHERE id=" + id;
-	    System.out.println(sql);
 		
 		connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -29,8 +27,7 @@ public class ModifyDao extends Dao {
 	public int insert(String title, String content, String priority) throws Exception {
 		String sql = "INSERT INTO " + tableName + 
 				" (title, contents, createdAt, priority) VALUES (\"" + 
-				   title + "\", \"" + content + "\", CURRENT_TIMESTAMP, \"" + priority + "\")";
-	    System.out.println(sql);
+				   title + "\", \"" + content + "\", CURRENT_TIMESTAMP, " + priority + ")";
 		
 	    connect();
 		PreparedStatement statement = connection.prepareStatement(sql);

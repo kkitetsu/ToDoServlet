@@ -47,8 +47,6 @@ public class LoginController extends HttpServlet {
                 stmt.setString(1, username);
                 stmt.setString(2, hashedPassword);
                 
-                System.out.println(stmt.toString());
-                
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     int id = rs.getInt("id");

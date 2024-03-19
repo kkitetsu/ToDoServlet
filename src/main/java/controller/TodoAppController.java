@@ -42,15 +42,23 @@ public class TodoAppController extends HttpServlet {
 		request.setCharacterEncoding("utf-8"); 
 		ListDao dao = new ListDao();
 		
-		System.out.println(request.getParameter("action"));
+		String action = request.getParameter("action");
+		String input = "";
+		
+		if (action == null) {
+			input = "";
+		} else if (action.equals("AscendingTime")) {
+			input = "ORDER BY createdAt";
+		} else if (action.equals("DescendingTime")) {
+			input = "ORDER BY createdAt DESC";
+		} else if (action.equals("AscendingPri")) {
+			input = "ORDER BY priority";
+		} else {
+			input = "ORDER BY priority DESC";
+		}
 		
 		try {
-			HashMap<Integer, ArrayList<String>> selectedData = dao.select("");
-			if (request.getAttribute("sortTime") != null) {
-				selectedData = dao.select((String) request.getAttribute("sortTime"));
-			} else if (request.getAttribute("sortPri") != null) {
-				selectedData = dao.select((String) request.getAttribute("sortPri"));
-			}
+			HashMap<Integer, ArrayList<String>> selectedData = dao.select(input);
 			request.setAttribute("rows", selectedData);
 		} catch (Exception e) {
 			e.printStackTrace();

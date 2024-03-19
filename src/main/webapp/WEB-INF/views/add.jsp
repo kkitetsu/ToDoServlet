@@ -40,9 +40,9 @@
 	    <div>
 	    	<label for="priority">Priority:</label>
 		    <select id="priority" name="priority">
-		        <option value="HIGH">HIGH</option>
-		        <option value="MEDIUM">MEDIUM</option>
-		        <option value="LOW">LOW</option>
+		        <option value=3>HIGH</option>
+		        <option value=2>MEDIUM</option>
+		        <option value=1>LOW</option>
 		    </select>
 	        <input type="submit" value="AddNew" name="action">
 	    </div>
