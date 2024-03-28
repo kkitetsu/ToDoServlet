@@ -11,6 +11,7 @@ public class ModifyDao extends Dao {
 	public int update(String id, String comment, String priority) throws Exception {
 	    String sql = "UPDATE " + tableName + " SET contents=\"" + comment + "\"" + ", priority=" + priority + " WHERE id=" + id;
 	    	
+	    System.out.println(sql);
 		connect();
 		PreparedStatement statement = connection.prepareStatement(sql);
 		return statement.executeUpdate();
