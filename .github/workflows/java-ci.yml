@@ -20,8 +20,8 @@ jobs:
         distribution: 'adopt'
 
     - name: Build with Maven
-      run:  mvn -B package --file pom.xml
+      run:  javac -d ./classes ./src/*.java
 
     - name: Run test with JUnit
-      run:  mvn test
+      run:  java -cp "./classes:path/to/your/junit.jar" org.junit.runner.JUnitCore com.controller
   
