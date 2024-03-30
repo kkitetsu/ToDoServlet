@@ -1,4 +1,4 @@
-name: Java CI
+name: Java CI with Maven
 
 on:
   push:
@@ -16,12 +16,11 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: '11' # or whichever version you're using
         distribution: 'adopt'
 
     - name: Build with Maven
-      run:  javac -d ./classes ./src/*.java
+      run: mvn clean package --file pom.xml
 
-    - name: Run test with JUnit
-      run:  java -cp "./classes:path/to/your/junit.jar" org.junit.runner.JUnitCore com.controller
-  
+    - name: Run tests with JUnit
+      run: mvn test --file pom.xml
